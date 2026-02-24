@@ -6,7 +6,7 @@ import axios from "axios";
 const getAllRecipes = async () => {
   let allRecipes = [];
   await axios
-    .get("http://localhost:5000/recipe")
+    .get("http://localhost:3000/recipe")
     .then((res) => (allRecipes = res.data))
     .catch((err) => console.log("The following error occured", err));
 

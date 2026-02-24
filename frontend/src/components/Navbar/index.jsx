@@ -1,7 +1,14 @@
 import React, { useState } from "react";
+import Modal from "../Modal";
+import InputForm from "../InputForm";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [popUp, setPopUp] = useState(false);
+
+  const checkLogin = () => {
+    setPopUp(!popUp);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
@@ -26,7 +33,10 @@ const Navbar = () => {
               <li className="hover:text-emerald-500 cursor-pointer transition-colors">
                 Favourites
               </li>
-              <li className="bg-emerald-500 text-white px-5 py-2 rounded-full hover:bg-emerald-600 transition-all cursor-pointer">
+              <li
+                className="bg-emerald-500 text-white px-5 py-2 rounded-full hover:bg-emerald-600 transition-all cursor-pointer"
+                onClick={checkLogin}
+              >
                 Login
               </li>
               <li className="hover:text-red-500 cursor-pointer text-sm transition-colors">
@@ -87,6 +97,11 @@ const Navbar = () => {
             <li className="block px-3 py-2 text-red-500">Logout</li>
           </ul>
         </div>
+      )}
+      {popUp && (
+        <Modal onClose={() => setPopUp(false)}>
+          <InputForm setIsOpen={() => setIsOpen(false)} />
+        </Modal>
       )}
     </header>
   );
