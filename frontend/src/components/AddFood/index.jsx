@@ -1,25 +1,41 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddFood = () => {
+  const navigate = useNavigate();
+
+  const [file, setFile] = useState(null);
   const [recipe, setRecipe] = useState({
     title: "",
     ingredients: "",
     instructions: "",
     time: "",
   });
-  const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+
+    if (name === "ingredients") {
+      value = value.split(",").map((item) => item.trim());
+    }
+    if (name === "file") {
+      value = e.target.files[0];
+    }
+
     setRecipe((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // In a real MERN app, you'd use FormData to upload the image file
     console.log("Submitting Recipe:", recipe);
-    // await axios.post("http://localhost:3000/recipe", recipe);
+    await axios
+      .post("http://localhost:3000/recipe", recipe, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(() => {
+        navigate("/");
+      });
   };
 
   return (
@@ -72,7 +88,8 @@ const AddFood = () => {
             </label>
             <input
               type="file"
-              onChange={(e) => setFile(e.target.files[0])}
+              name="file"
+              onChange={handleChange}
               className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"
             />
           </div>

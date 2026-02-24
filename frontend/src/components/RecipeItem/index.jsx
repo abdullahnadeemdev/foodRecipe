@@ -10,16 +10,23 @@ const RecipeItems = () => {
         Latest Recipes
       </h2>
 
-      {/* Responsive Grid: 1 column on mobile, 2 on tablet, 3 on desktop */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {allRecipes.map((item) => (
           <div
             key={item._id}
             className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col"
           >
-            {/* Image Placeholder - You can use item.coverImage if you have it */}
-            <div className="h-48 bg-emerald-50 flex items-center justify-center text-emerald-200">
-              <span className="text-4xl">🍳</span>
+            {/* ✅ FIXED: Changed port to 3000 and added styling */}
+            <div className="h-48 bg-emerald-50 overflow-hidden">
+              <img
+                src={`http://localhost:3000/images/${item.coverImage}`}
+                alt={item.title}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.src =
+                    "https://via.placeholder.com/400x300?text=Recipe+Image";
+                }}
+              />
             </div>
 
             <div className="p-6 flex flex-col grow">
@@ -36,21 +43,15 @@ const RecipeItems = () => {
                 {item.instructions}
               </p>
 
-              {/* Ingredients Preview */}
               <div className="mt-auto">
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                   Ingredients
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {/* Since your ingredients are strings like "['beef', 'taco']", 
-                      we need a small trick to clean them up or display as a string preview */}
                   <span className="text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md italic">
-                    {item.ingredients
-                      .replace(/[\[\]']/g, "")
-                      .split(",")
-                      .slice(0, 3)
-                      .join(", ")}
-                    ...
+                    {/* ✅ FIXED: Use .join to display the array as a string */}
+                    {item.ingredients?.slice(0, 3).join(", ")}
+                    {item.ingredients?.length > 3 ? " ..." : ""}
                   </span>
                 </div>
               </div>

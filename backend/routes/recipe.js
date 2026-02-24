@@ -5,12 +5,13 @@ const {
   addRecipe,
   editRecipe,
   deleteRecipe,
+  upload,
 } = require("../controller/recipeController");
 const router = express.Router();
 
 router.get("/", getRecipes); // get all recipes
 router.get("/:id", getRecipe); //get recipe by id
-router.post("/", addRecipe); // add recipes in this route
+router.post("/", upload.single("file"), addRecipe); // add recipes in this route
 router.put("/:id", editRecipe); // for editiing previous recipes
 router.delete("/:id", deleteRecipe); //for delete Recipe
 
