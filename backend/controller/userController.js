@@ -2,7 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const userSignUp = async (res, req) => {
+const userSignUp = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "Enter info fields are empty" });
@@ -12,8 +12,34 @@ const userSignUp = async (res, req) => {
   if (user) {
     return res.status(400).json({ message: "User already exists" });
   }
+
+  const hashPwd = await bcrypt.hash(password, 10);
+  const newUser = await User.create({ email, password: hashPwd });
+
+  let token = jwt.sign({ email, id: newUser._id }, process.env.SECRET_KEY);
+  return res.status(200).json({ token, newUser });
 };
-const userLogin = async (res, req) => {};
-const getUser = async (res, req) => {};
+
+const userLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: " info fields are empty" });
+  }
+
+  let user = await User.findOne({ email });
+
+  if (user && (await bcrypt.compare(password, user.password))) {
+    let token = jwt.sign({ email, id: user._id }, process.env.SECRET_KEY);
+    return res.status(200).json({ token, user });
+  } else {
+    return res.status(400).json({ message: "User credentials incorrect" });
+  }
+};
+
+const getUser = async (req, res) => {
+  const user = await User.findById(req.params.id);
+  res.json({ email: user.email });
+};
 
 module.exports = { userSignUp, userLogin, getUser };

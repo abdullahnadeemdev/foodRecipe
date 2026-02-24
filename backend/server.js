@@ -10,6 +10,6 @@ connectDb();
 app.use(express.json());
 app.use(cors());
 
-// app.get("/", (req, res) => res.json({ message: "Hello" }));
+app.use("/", require("./routes/user"));
 app.use("/recipe", require("./routes/recipe"));
 app.listen(PORT, (err) => console.log(`App is listening on Port ${PORT}`));
