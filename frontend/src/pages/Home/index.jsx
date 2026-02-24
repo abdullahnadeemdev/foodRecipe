@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import Image from "../../assets/react.svg";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import RecipeItems from "../../components/RecipeItem";
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <>
       {/* 1. Added flex-col for mobile (stacked) and flex-row for desktop (side-by-side).
@@ -21,8 +23,11 @@ const Home = () => {
             veritatis optio assumenda officia consectetur expedita nihil. Ex,
             sint fuga?
           </h5>
-          <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-emerald-200">
-            Share this Recipe
+          <button
+            onClick={() => navigate("/addRecipe")}
+            className="bg-emerald-500 hover:bg-emerald-600 text-white cursor-pointer font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-emerald-200"
+          >
+            Share Recipe
           </button>
         </div>
 
