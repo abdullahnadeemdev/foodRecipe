@@ -1,11 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import Image from "../../assets/react.svg";
-import Footer from "../../components/Footer";
-import Navbar from "../../components/Navbar";
+import InputForm from "../../components/InputForm";
 import RecipeItems from "../../components/RecipeItem";
+import { useState } from "react";
+import Modal from "../../components/Modal";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const addRecipe = () => {
+    let token = localStorage.getItem("TOKEN");
+    if (token) {
+      navigate("/addRecipe");
+    } else {
+      setIsOpen(true);
+    }
+  };
   return (
     <>
       {/* 1. Added flex-col for mobile (stacked) and flex-row for desktop (side-by-side).
@@ -24,7 +34,7 @@ const Home = () => {
             sint fuga?
           </h5>
           <button
-            onClick={() => navigate("/addRecipe")}
+            onClick={addRecipe}
             className="bg-emerald-500 hover:bg-emerald-600 text-white cursor-pointer font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-emerald-200"
           >
             Share Recipe
@@ -53,6 +63,12 @@ const Home = () => {
           ></path>
         </svg>
       </div>
+
+      {isOpen && (
+        <Modal onClose={() => setIsOpen(false)}>
+          <InputForm setIsOpen={() => setIsOpen(false)} />
+        </Modal>
+      )}
 
       <div>
         <RecipeItems />
