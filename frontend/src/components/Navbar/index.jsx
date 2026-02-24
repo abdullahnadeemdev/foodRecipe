@@ -1,13 +1,27 @@
 import React, { useState } from "react";
 import Modal from "../Modal";
 import InputForm from "../InputForm";
+import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [popUp, setPopUp] = useState(false);
+  let token = localStorage.getItem("TOKEN");
+  const [isLogin, setIsLogin] = useState(token ? false : true);
+
+  useEffect(() => {
+    setIsLogin(token ? false : true);
+  }, [token]);
 
   const checkLogin = () => {
-    setPopUp(!popUp);
+    if (token) {
+      localStorage.removeItem("TOKEN");
+      localStorage.removeItem("user");
+      setIsLogin(true);
+    } else {
+      setPopUp(!popUp);
+    }
   };
 
   return (
@@ -25,22 +39,25 @@ const Navbar = () => {
           <div className="hidden md:block">
             <ul className="flex space-x-8 items-center font-medium text-gray-600">
               <li className="hover:text-emerald-500 cursor-pointer transition-colors">
-                Home
+                <NavLink to="/">Home</NavLink>
               </li>
-              <li className="hover:text-emerald-500 cursor-pointer transition-colors">
-                My Recipe
+              <li
+                className="hover:text-emerald-500 cursor-pointer transition-colors"
+                onClick={() => isLogin && setPopUp(true)}
+              >
+                <NavLink to={!isLogin ? "/myRecipe" : "/"}>My Recipe</NavLink>
               </li>
-              <li className="hover:text-emerald-500 cursor-pointer transition-colors">
-                Favourites
+              <li
+                className="hover:text-emerald-500 cursor-pointer transition-colors"
+                onClick={() => isLogin && setPopUp(true)}
+              >
+                <NavLink to={!isLogin ? "/favRecipe" : "/"}>Favourites</NavLink>
               </li>
               <li
                 className="bg-emerald-500 text-white px-5 py-2 rounded-full hover:bg-emerald-600 transition-all cursor-pointer"
                 onClick={checkLogin}
               >
-                Login
-              </li>
-              <li className="hover:text-red-500 cursor-pointer text-sm transition-colors">
-                Logout
+                {isLogin ? "Login" : "Logout"}
               </li>
             </ul>
           </div>
@@ -83,13 +100,19 @@ const Navbar = () => {
         <div className="md:hidden bg-white border-b border-gray-100 animate-fade-in-down">
           <ul className="px-4 pt-2 pb-4 space-y-2 font-medium text-gray-600">
             <li className="block px-3 py-2 hover:bg-emerald-50 hover:text-emerald-500 rounded-md">
-              Home
+              <NavLink to="/">Home</NavLink>
             </li>
-            <li className="block px-3 py-2 hover:bg-emerald-50 hover:text-emerald-500 rounded-md">
-              My Recipe
+            <li
+              className="block px-3 py-2 hover:bg-emerald-50 hover:text-emerald-500 rounded-md"
+              onClick={() => isLogin && setPopUp(true)}
+            >
+              <NavLink to={!isLogin ? "/myRecipe" : "/"}>My Recipe</NavLink>
             </li>
-            <li className="block px-3 py-2 hover:bg-emerald-50 hover:text-emerald-500 rounded-md">
-              Favourites
+            <li
+              className="block px-3 py-2 hover:bg-emerald-50 hover:text-emerald-500 rounded-md"
+              onClick={() => isLogin && setPopUp(true)}
+            >
+              <NavLink to={!isLogin ? "/favRecipe" : "/"}>Favourites</NavLink>
             </li>
             <li className="block px-3 py-2 text-emerald-600 font-bold border-t border-gray-100 pt-4">
               Login

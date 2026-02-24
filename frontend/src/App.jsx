@@ -22,7 +22,11 @@ const router = createBrowserRouter([
         Loading App...
       </div>
     ),
-    children: [{ path: "/", element: <Home />, loader: getAllRecipes }],
+    children: [
+      { path: "/", element: <Home />, loader: getAllRecipes },
+      { path: "/myRecipe", element: <Home />, loader: getAllRecipes },
+      { path: "/favRecipe", element: <Home />, loader: getAllRecipes },
+    ],
   },
 ]);
 
