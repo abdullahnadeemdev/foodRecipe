@@ -8,6 +8,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [popUp, setPopUp] = useState(false);
   let token = localStorage.getItem("TOKEN");
+  let user = JSON.parse(localStorage.getItem("user")) || {};
   const [isLogin, setIsLogin] = useState(token ? false : true);
 
   useEffect(() => {
@@ -57,7 +58,8 @@ const Navbar = () => {
                 className="bg-emerald-500 text-white px-5 py-2 rounded-full hover:bg-emerald-600 transition-all cursor-pointer"
                 onClick={checkLogin}
               >
-                {isLogin ? "Login" : "Logout"}
+                {isLogin ? "Login" : "Logout"} {"  "}
+                {user.email ? user.email : ""}
               </li>
             </ul>
           </div>
