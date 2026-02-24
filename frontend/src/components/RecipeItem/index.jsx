@@ -24,7 +24,7 @@ const RecipeItems = () => {
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.target.src =
-                    "https://via.placeholder.com/400x300?text=Recipe+Image";
+                    "https://placehold.jp/24/059669/ffffff/400x300.png?text=No+Image+Found";
                 }}
               />
             </div>
@@ -50,7 +50,7 @@ const RecipeItems = () => {
                 <div className="flex flex-wrap gap-2">
                   <span className="text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md italic">
                     {/* ✅ FIXED: Use .join to display the array as a string */}
-                    {item.ingredients?.slice(0, 3).join(", ")}
+                    {item.ingredients.join(", ")}
                     {item.ingredients?.length > 3 ? " ..." : ""}
                   </span>
                 </div>

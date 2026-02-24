@@ -24,6 +24,7 @@ const getRecipe = async (req, res) => {
 };
 
 const addRecipe = async (req, res) => {
+  console.log("req.user", req.user);
   const { title, ingredients, time, instructions } = req.body;
 
   if (!title || !ingredients || !instructions) {
@@ -36,6 +37,7 @@ const addRecipe = async (req, res) => {
     instructions,
     time,
     coverImage: req.file.filename,
+    createdBy: req.user.id,
   });
   return res.json(newRecipe);
 };

@@ -31,7 +31,10 @@ const AddFood = () => {
     console.log("Submitting Recipe:", recipe);
     await axios
       .post("http://localhost:3000/recipe", recipe, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: "bearer " + localStorage.getItem("TOKEN"),
+        },
       })
       .then(() => {
         navigate("/");
